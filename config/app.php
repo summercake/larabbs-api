@@ -180,6 +180,8 @@ return [
          * SMS Provider
          * */
         App\Providers\EasySmsServiceProvider::class,
+        App\Providers\EasySmsServiceProvider::class,
+        App\Providers\JpushServiceProvider::class,
     ],
 
     /*
