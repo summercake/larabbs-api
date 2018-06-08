@@ -14,6 +14,7 @@ $factory->define(App\Models\Topic::class, function (Faker $faker) {
         'title' => $sentence,
         'body' => $faker->text(),
         'excerpt' => $sentence,
+        'reply_count'=>100,
         'created_at' => $created_at,
         'updated_at' => $updated_at,
     ];
