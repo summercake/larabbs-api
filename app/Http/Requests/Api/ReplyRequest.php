@@ -2,15 +2,8 @@
 
 namespace App\Http\Requests\Api;
 
-use Dingo\Api\Http\FormRequest;
-
 class ReplyRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         return [
