@@ -1,35 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Requests\Api;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Requests\Api\UserRequest;
+use Dingo\Api\Http\FormRequest;
 
-class UsersController extends Controller
+class UserRequest extends FormRequest
 {
-    public function store(UserRequest $request)
+    public function authorize()
     {
-        $verifyData = \Cache::get($request->verification_key);
+        return true;
+    }
 
-        if (!$verifyData) {
-            return $this->response->error('验证码已失效', 422);
-        }
+    public function rules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|min:6',
+            'verification_key' => 'required|string',
+            'verification_code' => 'required|string',
+        ];
+    }
 
-        if (!hash_equals($verifyData['code'], $request->verification_code)) {
-            // 返回401
-            return $this->response->errorUnauthorized('验证码错误');
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'phone' => $verifyData['phone'],
-            'password' => bcrypt($request->password),
-        ]);
-
-        // 清除验证码缓存
-        \Cache::forget($request->verification_key);
-
-        return $this->response->created();
+    public function attributes()
+    {
+        return [
+            'verification_key' => '短信验证码 key',
+            'verification_code' => '短信验证码',
+        ];
     }
 }
